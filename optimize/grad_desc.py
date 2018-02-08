@@ -73,6 +73,8 @@ class grad_desc(object):
     def rgd_fit(model, x, y, theta, jac, alpha=0.00005, maxiters=100000):
         """
         Random Gradient Descent
+           对于随机梯度下降算法，若速率因子选择太大，解会发散或得到局部最优解。
+           需要将速率因子调小，才有可能得到接近最优解。
         """
         niter = 0
         sample_idx = 0

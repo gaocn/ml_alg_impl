@@ -53,19 +53,15 @@ if __name__ == "__main__":
     data_path = r'E:\PycharmProjects\ml_impl\data\for_gd'
     data = loadTxt(data_path)
 
-    # train_x = np.array(data.iloc[:, 0])
-    # train_y = np.asarray(data.iloc[:, 1])
-    # theta = np.array([0, 1])
-    #
-    # grad_desc.bgd_fit(model, train_x, train_y, theta, fun_jac)
     x, y = genData(100, 25, 10)  # 传入参数
     m, n = np.shape(x)  # 检查x的行列数，是否一致
     theta = np.ones(n)  # 初始化
-    # print(theta)
-    # predict_y = grad_desc.bgd_predict(x)
 
     theta1 = grad_desc.bgd_fit(model, x, y, theta, jac=fun_jac, alpha=0.0005)
+    # grad_desc.bgd_fit(model, train_x, train_y, theta, fun_jac)
+
     theta2 = grad_desc.rgd_fit(model, x, y, theta, jac=rgd_jac, alpha=0.00005)
+
     theta3 = grad_desc.mini_bgd_fit(model, x, y, theta, jac=fun_jac, alpha=0.0005)
 
 
