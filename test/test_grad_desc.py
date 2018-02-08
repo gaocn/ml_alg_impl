@@ -58,6 +58,8 @@ if __name__ == "__main__":
     theta = np.ones(n)  # 初始化
     theta = grad_desc.bgd_fit(model, x, y, theta, jac=fun_jac, alpha=0.0005)
     print(theta)
+    predict_y = grad_desc.bgd_predict(x)
+
 
 
 

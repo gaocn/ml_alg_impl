@@ -16,6 +16,7 @@ class grad_desc(object):
     """
 
     best_thetha = None
+    model = None
 
     @staticmethod
     def bgd_fit(model, x, y, theta, jac, alpha=0.01, maxiters=100000):
@@ -44,9 +45,14 @@ class grad_desc(object):
         """
         print(msg % (cost, theta, niter))
         grad_desc.best_thetha = theta
+        grad_desc.model = model
         return theta
 
     @staticmethod
     def get_cost(loss, m):
         cost = np.sum(loss ** 2) / (2.0 * m)
         return cost
+
+    @staticmethod
+    def bgd_predict(x):
+        return grad_desc.model(x, grad_desc.best_thetha)
