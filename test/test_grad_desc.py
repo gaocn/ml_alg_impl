@@ -30,6 +30,11 @@ def fun_jac(x, theta):
     # jac[:, 1] = temp * x[1]
     return x
 
+def rgd_jac(x, theta, idx):
+    # temp = 1.0 / ((1 - np.exp(np.dot(x, theta))) ** 2)
+    # jac[:, 0] = temp * x[0]
+    # jac[:, 1] = temp * x[1]
+    return x[idx, :]
 
 def genData(numPoints,bias,variance):
     # 生成0矩阵，shape表示矩阵的形状，参数1是行，后边是列
@@ -56,9 +61,12 @@ if __name__ == "__main__":
     x, y = genData(100, 25, 10)  # 传入参数
     m, n = np.shape(x)  # 检查x的行列数，是否一致
     theta = np.ones(n)  # 初始化
-    theta = grad_desc.bgd_fit(model, x, y, theta, jac=fun_jac, alpha=0.0005)
-    print(theta)
-    predict_y = grad_desc.bgd_predict(x)
+    # print(theta)
+    # predict_y = grad_desc.bgd_predict(x)
+
+    theta1 = grad_desc.bgd_fit(model, x, y, theta, jac=fun_jac, alpha=0.0005)
+    theta2 = grad_desc.rgd_fit(model, x, y, theta, jac=rgd_jac, alpha=0.00005)
+    theta3 = grad_desc.mini_bgd_fit(model, x, y, theta, jac=fun_jac, alpha=0.0005)
 
 
 
