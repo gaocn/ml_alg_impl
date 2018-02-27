@@ -23,13 +23,13 @@ class grad_desc(object):
     def bgd_fit(model, x, y, theta, jac, alpha=0.0001, maxiters=100000):
         """
         Batch Gradient Descent
-        :param model:
-        :param x:
-        :param y:
-        :param theta:
-        :param jac:
-        :param alpha:
-        :param maxiters:
+        :param model: 目标函数，预测模型
+        :param x: 模型输入，测试集
+        :param y: 模型输出，测试集
+        :param theta: 拟合参数初始值
+        :param jac: 预测模型与theta的一阶偏导
+        :param alpha: 速率因子
+        :param maxiters: 最大迭代次数
         :return:
         """
         # m为样本量， n为特征值个数

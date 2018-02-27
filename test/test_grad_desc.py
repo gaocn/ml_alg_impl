@@ -6,12 +6,9 @@
 """
 
 import pandas as pd
-from scipy.optimize import minimize
-import scipy.optimize as optimize
 import numpy as np
 import random
-from pandas import Series, DataFrame
-from optimize.grad_desc import grad_desc
+from optimize import grad_desc
 
 
 def loadTxt(file):
