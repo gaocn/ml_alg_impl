@@ -18,10 +18,11 @@ class SimulatedAnnealing(object):
     """
 
     @staticmethod
-    def rsa(solution_func, cost_func, initial_temperature=100, k=1, cooling_factor=0.98, max_iter=1000):
+    def rsa(ans0, solution_func, cost_func, initial_temperature=100, k=1, cooling_factor=0.98, max_iter=1000):
         """
         随机模拟退火算法
         NOTE: 一次得到的解可能是局部最优，因此使用模拟该算法是需要运行多次，找到可能的全局最优解。
+        :param ans0: 初始解
         :param solution_func: 产生随机解的函数，需要能够遍布整个解空间
         :param cost_func: 求解方程的表达式
         :param initial_temperature: 初始温度
@@ -34,7 +35,7 @@ class SimulatedAnnealing(object):
         min_temperature = 0.00001
         temperature = initial_temperature
 
-        best_ans = solution_func()
+        best_ans = ans0
         best_energy = cost_func(best_ans)
 
         while temperature > min_temperature:
@@ -42,7 +43,7 @@ class SimulatedAnnealing(object):
             energy = None
             asn = None
             for niter in range(max_iter):
-                asn = solution_func()
+                asn = solution_func(best_ans)
                 energy = cost_func(asn)
                 delta = energy - best_energy
 

@@ -19,18 +19,23 @@ def func(*args):
     return x ** 2 + y ** 2 + 5 * x * y - 4
 
 
-def perturb(x0, y0):
-    def wrapper():
-        x = x0 + rnd.uniform(-10, 10)
-        y = y0 + rnd.uniform(-10, 10)
+def perturb(*args):
+    x, y = args[0]
+    x = x + rnd.uniform(-10, 10)
+    y = y + rnd.uniform(-10, 10)
 
-        x =  10 if x >  10 else x
-        x = -10 if x < -10 else x
-        y =  10 if y >  10 else y
-        y = -10 if y < -10 else y
+    x = 10 if x > 10 else x
+    x = -10 if x < -10 else x
+    y = 10 if y > 10 else y
+    y = -10 if y < -10 else y
 
-        return x, y
-    return wrapper
+    return x, y
+
+
+def pertuib2(x, y, radio):
+    x = x + radio * (rnd.uniform(-10, 10) - x)
+    y = y + radio * (rnd.uniform(-10, 10) - y)
+    return x, y
 
 
 def estimate_initial_temerature(n):
@@ -56,5 +61,5 @@ if __name__ == '__main__':
     initial_temperature = estimate_initial_temerature(1000)
     k = estimate_k(initial_temperature, 1000)
     # res = SimulatedAnnealing.rsa(x0, 0.99, func, cons=cons, max_iter=1000)
-    res = SimulatedAnnealing.rsa(perturb(x, y), func, initial_temperature, k, cooling_factor=0.95)
+    res = SimulatedAnnealing.rsa((x, y), perturb, func, initial_temperature, k, cooling_factor=0.95)
 
