@@ -39,5 +39,5 @@ if __name__ == '__main__':
     x = rnd.uniform(-10, 10)
     y = rnd.uniform(-10, 10)
     # res = SimulatedAnnealing.rsa(x0, 0.99, func, cons=cons, max_iter=1000)
-    res = SimulatedAnnealing.rsa(perturb(x, y), func, cooling_factor=0.88)
+    res = SimulatedAnnealing.rsa(perturb(x, y), func, cooling_factor=0.95)
 
