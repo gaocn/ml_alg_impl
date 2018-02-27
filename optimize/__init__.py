@@ -1,1 +1,1 @@
-import optimize.grad_desc
+from .grad_desc import grad_desc
