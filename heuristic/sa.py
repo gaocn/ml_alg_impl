@@ -64,3 +64,6 @@ class SimulatedAnnealing(object):
             temperature = temperature * cooling_factor
 
         return best_ans, best_energy
+
+    def __repr__(self):
+        return "Simulating Annealing Algorithm" % reprlib.repr(self.rsa.__name__)
