@@ -7,7 +7,7 @@
 import numpy.random as rnd
 from heuristic.sa import SimulatedAnnealing
 import numpy as np
-import scipy
+
 
 def func(*args):
     """
