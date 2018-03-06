@@ -36,11 +36,12 @@ def jac(x):
 def hess(x):
     return np.array([
         [1200*x[0]**2 - 400*x[1] + 2, -400*x[0]],
-        [-400*x[0],                   200,]
+        [-400*x[0],                   200]
     ])
 
 
 if __name__ == "__main__":
     print(nt)
     x0 = np.random.random(size=2)
-    res = nt.damp_newton(x0, func, jac, hess)
+    # res = nt.damp_newton(x0, func, jac, hess)
+    res = nt.newton(x0, func, jac, hess)

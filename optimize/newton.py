@@ -5,6 +5,7 @@
  Description: 
 """
 import numpy as np
+import scipy.linalg as linalg
 import reprlib
 
 
@@ -20,15 +21,44 @@ class Newton(object):
     # 牛顿算法实现
     ########################################################################
     @staticmethod
-    def newton():
-        pass
+    def newton(x0, func, jac, hess, epsilon=1e-10, max_iter=10000):
+        """
+        牛顿迭代算法
+        :param x0: 初始解
+        :param func: 目标函数
+        :param jac: 目标函数的一阶导数
+        :param hess: 目标函数的二阶偏导数
+        :param epsilon: 终止误差，由梯度的
+        :param max_iter: 最大迭代次数
+        :return: 最优解，最优解对应的函数值
+        """
+        niter = 0
+        while niter < max_iter:
+            g = jac(x0)
+            H = hess(x0)
+            d = -1.0 * linalg.solve(H, g)
+
+            if linalg.norm(g) < epsilon:
+                break
+
+            x0 = x0 + d
+            niter += 1
+        msg = """
+               Naive Newton terminated successfully
+                   function value: %f    
+                   x : %s
+                   iterations number: %d
+               """
+        print(msg % (func(x0), x0, niter))
+        return x0, func(x0)
 
     ########################################################################
     # 阻尼牛顿算法实现
     ########################################################################
     @staticmethod
-    def damp_newton(x0, func, jac, hess, epsilon=1e-10, max_iter=10000, beta=0.55, delta=0.4):
+    def damped_newton(x0, func, jac, hess, epsilon=1e-10, max_iter=10000, beta=0.55, delta=0.4):
         """
+         阻尼牛顿算法
         :param x0: 初始解
         :param func: 目标函数
         :param jac: 目标函数的一阶导数
@@ -45,6 +75,7 @@ class Newton(object):
             H = hess(x0)
 
             d = -1.0 * np.linalg.solve(H, g)
+            # d = -1.0 * linalg.solve(H, g)
             if np.linalg.norm(d) < epsilon:
                 break
 
