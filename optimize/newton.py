@@ -102,4 +102,55 @@ class Newton(object):
         print(msg % (func(x0), x0, niter))
         return x0, func(x0)
 
+    ########################################################################
+    # 修正牛顿算法实现
+    ########################################################################
+    @staticmethod
+    def corrected_newton(x0, func, jac, hess, epsilon=1e-10, max_iter=10000, beta=0.55, delta=0.4, tau=0):
+        """
+        修正牛顿算法
+        :param x0: 初始解
+        :param func: 目标函数
+        :param jac: 目标函数的一阶导数
+        :param hess: 目标函数的二阶偏导数
+        :param epsilon: 终止误差，由梯度的
+        :param max_iter: 最大迭代次数
+        :param beta: 范围[0,1]
+        :param delta: 范围[0,0.5]
+        :param tau: 阻尼因子，用于修订非正定海森矩阵，A = H + mu * I，mu = ||g||^(1 + tau)
+        :return: 最优解，最优解对应的函数值
+        """
+        niter = 0
+        n = np.shape(x0)[0]
 
+        while niter < max_iter:
+            g = jac(x0)
+            H = hess(x0)
+
+            if linalg.norm(g) < epsilon:
+                break
+
+            # 若H非正定
+            mu = np.power(linalg.norm(g), 1 + tau)
+            A = H + mu * np.eye(n)
+
+            d = -1.0 * linalg.solve(A, g)
+
+            m = 0
+            mk = 0
+            while m < 20:
+                if func(x0 + beta ** m * d) < func(x0) + delta * beta ** m * np.dot(g, d):
+                    mk = m
+                    break
+                m += 1
+            x0 = x0 + beta**mk * d
+            niter += 1
+
+        msg = """
+        Corrected Newton terminated successfully
+            function value: %f    
+            x : %s
+            iterations number: %d
+        """
+        print(msg % (func(x0), x0, niter))
+        return x0, func(x0)
