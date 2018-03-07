@@ -154,3 +154,54 @@ class Newton(object):
         """
         print(msg % (func(x0), x0, niter))
         return x0, func(x0)
+
+    ########################################################################
+    # 拟牛顿算法实现-DFP
+    ########################################################################
+    @staticmethod
+    def dfp(x0, func, jac, max_iter=10000, epsilon=1e-10, beta=0.55, delta=0.4):
+
+        niter = 0
+        n = np.shape(x0)[0]
+        D = np.eye(n)
+
+        while niter < max_iter:
+
+            g = jac(x0)
+            if np.linalg.norm(g) < epsilon:
+                break
+            d = -1.0 * np.dot(D, g)
+
+            # 确定长因子
+            m, mk = 0, 0
+            while m < 20:
+                if func(x0 + beta**m * d) < func(x0) + delta * beta**m * np.dot(g, d):
+                    mk = m
+                    break
+                m += 1
+
+            # 校正矩阵D = H^{-1}
+            x = x0 + beta**mk * d
+            s = x - x0
+            y = jac(x) - g
+
+            if np.dot(s, y) > 0:
+                print("iteration %d | corrected D= %s，cost=%f" % (niter, D, func(x0)))
+                Dy = np.dot(D, y)
+                # np.dot(s, y)为常数
+                # s.reshape((n, 1)) * s = np.dot(s.reshape((n, 1)), s.reshape((1, n)))  为 n * n的矩阵
+                # Dy.reshape((n, 1)) * Dy 为 n * n的矩阵
+                D += 1.0 * s.reshape((n, 1)) * s / np.dot(s, y) \
+                     - 1.0 * Dy.reshape((n, 1)) * Dy/ np.dot(np.dot(y, D), y)
+
+            x0 = x
+            niter += 1
+
+        msg = """
+        Quasi-Newton(DFP) terminated successfully
+            function value: %f    
+            x : %s
+            iterations number: %d
+        """
+        print(msg % (func(x0), x0, niter))
+        return x0, func(x0)
