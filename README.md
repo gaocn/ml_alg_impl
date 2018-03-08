@@ -12,6 +12,8 @@ Implementation of basic ML Algorithms
 1. 牛顿算法
 2. 阻尼牛顿算法
 
+#### 拟牛顿算法
+- DFP算法
 
 ### 启发式算法
 
