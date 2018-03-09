@@ -46,4 +46,5 @@ if __name__ == "__main__":
     # res = nt.newton(x0, func, jac, hess)
     # res = nt.damped_newton(x0, func, jac, hess)
     # res = nt.corrected_newton(x0, func, jac, hess)
-    res = nt.dfp(x0, func, jac)
+    # res = nt.dfp(x0, func, jac)
+    res = nt.bgfs(x0, func, jac)
