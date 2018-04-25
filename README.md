@@ -14,7 +14,14 @@ Implementation of basic ML Algorithms
 
 #### 拟牛顿算法
 - DFP算法
+- BGFS算法
+
 
 ### 启发式算法
 
 1. 模拟退火算法（Simulated Annealing）
+
+
+
+### 画图工具
+1. 混淆矩阵
