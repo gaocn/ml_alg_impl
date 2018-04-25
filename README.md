@@ -25,3 +25,7 @@ Implementation of basic ML Algorithms
 
 ### 画图工具
 1. 混淆矩阵
+
+
+### 降维算法
+1. Kernel PCA

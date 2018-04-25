@@ -5,7 +5,7 @@
  Description: 
 """
 import numpy.random as rnd
-from heuristic.sa import SimulatedAnnealing
+from decomposition import SimulatedAnnealing
 import numpy as np
 
 
