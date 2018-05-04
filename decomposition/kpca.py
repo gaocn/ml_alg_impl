@@ -31,10 +31,10 @@ def kpca(X, kernel, n_components, gamma=1):
 
     # 中心化核矩阵
     C = np.ones((m, m)) / m
-    K = K - C.dot(K) -  K.dot(C) + C.dot(K).dot(C)
+    K = K - C.dot(K) - K.dot(C) + C.dot(K).dot(C)
 
     # 返回特征值，和特征向量
-    eigvals, eigvecs  = eigh(K)
+    eigvals, eigvecs = eigh(K)
 
     # 返回前K个特征向量构成的矩阵
     target_eigvecs = eigvecs[:, -1:-(n_components+1):-1]
@@ -55,3 +55,4 @@ if __name__  == '__main__':
     #
     svm2 = SVC(kernel=chi2_kernel).fit(X, y)
     pred2 = svm2.predict(X)
+

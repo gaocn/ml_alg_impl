@@ -72,18 +72,6 @@ def classify1(inX, data_set, labels, k):
     return sorted_class_count[0][0]
 
 
-"""
-
-
-
-"""
-
-
-
-
-
-
-
 if __name__ == '__main__':
     group, labels = create_data_set()
     # plt_raw_data(group[:, 0], group[:, 1], labels)
