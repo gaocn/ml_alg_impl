@@ -29,3 +29,7 @@ Implementation of basic ML Algorithms
 
 ### 降维算法
 1. Kernel PCA
+
+
+###  KNN使用实战
+1. 二分类：判断电影类型
