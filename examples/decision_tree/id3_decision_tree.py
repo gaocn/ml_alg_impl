@@ -14,6 +14,7 @@ import matplotlib.pyplot as plt
 from collections import defaultdict
 import numpy as np
 import operator
+import pickle
 
 """
  ID3 Algorithm to split data
@@ -169,6 +170,19 @@ def classify(inTree, feature_names, test):
 
 
 ##################################################################
+#                  Persist   Decision  Tree                      #
+##################################################################
+def store_tree(inTree, file_name):
+    with open(file_name, 'wb') as fd:
+        pickle.dump(inTree, fd)
+
+
+def load_tree(file_name):
+    with open(file_name, 'rb') as fd:
+        return pickle.load(fd)
+
+
+##################################################################
 #                  Plot   Decision  Tree                         #
 ##################################################################
 def get_leaf_node_num(tree):
@@ -291,3 +305,9 @@ if __name__ == '__main__':
     print('classify result: ', classify(tree, feature_names, ['0', '0']))
     print('classify result: ', classify(tree, feature_names, ['0', '1']))
     print('classify result: ', classify(tree, feature_names, ['1', '1']))
+
+    file_name = r'E:\PycharmProjects\ml_impl\examples\decision_tree\persist\id3_decision_tree'
+    store_tree(tree, file_name)
+
+    id3_tree = load_tree(file_name)
+    print('Decision Tree: \n', id3_tree, tree==id3_tree)
