@@ -10,6 +10,7 @@
     Cons: Prone to overfitting
     Works with: Numeric values, nominal values
 """
+import matplotlib.pyplot as plt
 from collections import defaultdict
 import numpy as np
 import operator
@@ -35,7 +36,9 @@ import operator
     
 """
 
-
+##################################################################
+#                  Construct   Decision  Tree                    #
+##################################################################
 def calc_entropy(labels):
     """
      Entropy = - sum{p(xi)*log(p(xi))} i in [1, n]
@@ -144,13 +147,112 @@ def build_id3_decision_tree(dataset, feature_names):
 
     uni_feature_vals = np.unique(dataset[:, best_feature])
     for val in uni_feature_vals:
-
         decision_tree[best_feat_name][val] = build_id3_decision_tree(
             split_data_by_feature(dataset, best_feature, val),
             feature_names
         )
-
     return decision_tree
+
+
+##################################################################
+#                  Plot   Decision  Tree                         #
+##################################################################
+def get_leaf_node_num(tree):
+    if type(tree).__name__ != 'dict':
+        return 1
+    leaf_num = 0
+    for node in tree:
+        leaf_num += get_leaf_node_num(tree[node])
+    return leaf_num
+
+
+def get_max_depth(tree):
+    if type(tree).__name__ != 'dict':
+        return 1
+    max_depth = 0
+    for node in tree:
+        depth = get_max_depth(tree[node]) + 1
+        max_depth = max(max_depth, depth)
+    return max_depth
+
+
+decision_node = dict(boxstyle='sawtooth', fc='0.8')
+leaf_node = dict(boxstyle='round4', fc='0.8')
+arrow_args = dict(arrowstyle='<-')
+
+
+def plot_decision_node(text, parent_pos, child_pos, node_type):
+    """
+     xy:       point to annotate
+     xytext:   place of the text
+     xycoords: The coordinate system that `xy` is given in.
+     textcoords: 默认与`xycoords`一致
+     arrowprops: properties used to draw a arrow between `xy` and `xytext`
+    """
+    create_plot.ax.annotate(text, xy=parent_pos, xytext=child_pos, xycoords='axes fraction',
+                va='center', ha='center', bbox=node_type, arrowprops=arrow_args)
+
+
+def plot_middle_text(parent_pos, child_pos, text):
+    x_mid = parent_pos[0] + (child_pos[0] - parent_pos[0])/2.0
+    y_mid = parent_pos[1] + (child_pos[1] - parent_pos[1])/2.0
+    create_plot.ax.text(x_mid, y_mid, text)
+
+
+def create_plot(inTree):
+    fig = plt.figure(1, facecolor='white')
+    fig.clf()
+    # frameon: 图的边框
+    create_plot.ax = fig.add_subplot(111, frameon=False)
+    # parent_pos = (0.5, 1.0)
+    # child_pos = (0.5, 1.0)
+    # plot_decision_node('decision node', parent_pos, child_pos, decision_node)
+    # plot_middle_text(parent_pos, child_pos, 'branch')
+    # plot_decision_node('leaf node', (1.2, 1.2), (0.5, 1.0), leaf_node)
+    plot_decision_tree.total_width = float(get_leaf_node_num(inTree))
+    plot_decision_tree.total_height = float(get_max_depth(inTree))
+    plot_decision_tree.x_off = -0.5 / plot_decision_tree.total_width
+    plot_decision_tree.y_off = 1.0
+
+    init_pos = (0.5, 1.0)
+    plot_decision_tree(inTree, init_pos, '')
+    plt.show()
+
+
+def plot_decision_tree(tree, parent_pos, text):
+    """
+    in order to plot decision tree properly, we need know:
+      1. `number of leaf nodes` to size things in X coordination
+      2. `decision tree depth` to size things in Y coordination
+
+    :param tree: dict to represent a decision tree
+    :return:
+    """
+    print('plot decision tree')
+    num_leaf = get_leaf_node_num(tree)
+    node_text = list(tree.keys())[0]
+
+    child_pos = (
+        plot_decision_tree.x_off + (1.0 + float(num_leaf)) / 2.0 / plot_decision_tree.total_width
+        ,
+        plot_decision_tree.y_off
+    )
+    plot_decision_node(node_text, parent_pos, child_pos, decision_node)
+    plot_middle_text(parent_pos, child_pos, text)
+
+    plot_decision_tree.y_off -= 1.0 / plot_decision_tree.total_height
+    for key in tree[node_text]:
+        if type(tree[node_text][key]).__name__ == 'dict':
+            plot_decision_tree(tree[node_text][key], child_pos, str(key))
+        else:
+            plot_decision_tree.x_off += 1.0 / plot_decision_tree.total_width
+            plot_decision_node(tree[node_text][key], child_pos,
+                               (plot_decision_tree.x_off, plot_decision_tree.y_off),
+                                leaf_node)
+            plot_middle_text(child_pos,
+                             (plot_decision_tree.x_off, plot_decision_tree.y_off),
+                             str(key))
+    plot_decision_tree.y_off += 1.0 / plot_decision_tree.total_height
 
 
 if __name__ == '__main__':
@@ -162,4 +264,10 @@ if __name__ == '__main__':
     print('split by feature<%s>:\n' % feature_names[1], split_data_by_feature(data, 0, '0'))
     print('Best feature:', choose_best_feature_to_split(data))
 
-    print('Decision Tree: \n', build_id3_decision_tree(data, feature_names))
+    tree = build_id3_decision_tree(data, feature_names)
+    print('Decision Tree: \n', tree)
+    leaf_num = get_leaf_node_num(tree)
+    print('Decision Tree Leaf Number: \n', leaf_num)
+    depth = get_max_depth(tree)
+    print('Decision Tree Max Depth: \n', depth)
+    create_plot(tree)
