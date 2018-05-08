@@ -310,4 +310,4 @@ if __name__ == '__main__':
     store_tree(tree, file_name)
 
     id3_tree = load_tree(file_name)
-    print('Decision Tree: \n', id3_tree, tree==id3_tree)
+    print('Decision Tree: \n', id3_tree, tree == id3_tree)
