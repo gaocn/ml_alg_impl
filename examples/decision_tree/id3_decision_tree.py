@@ -154,6 +154,20 @@ def build_id3_decision_tree(dataset, feature_names):
     return decision_tree
 
 
+def classify(inTree, feature_names, test):
+    root_feature = list(inTree.keys())[0]
+    sub_tree = inTree[root_feature]
+    feature_index = list(feature_names).index(root_feature)
+
+    for key in sub_tree:
+        if test[feature_index] == key:
+            if type(sub_tree[key]).__name__ == 'dict':
+                clz_label = classify(sub_tree[key], feature_names, test)
+            else:
+                clz_label = sub_tree[key]
+    return clz_label
+
+
 ##################################################################
 #                  Plot   Decision  Tree                         #
 ##################################################################
@@ -270,4 +284,10 @@ if __name__ == '__main__':
     print('Decision Tree Leaf Number: \n', leaf_num)
     depth = get_max_depth(tree)
     print('Decision Tree Max Depth: \n', depth)
-    create_plot(tree)
+    # tree = {'no surfacing ': {0: 'no', 1: {'flippers': {0: 'no', 1: 'yes'}}, 3:'maybe'}}
+    # create_plot(tree)
+
+    print('classify result: ', classify(tree, feature_names, ['1', '0']))
+    print('classify result: ', classify(tree, feature_names, ['0', '0']))
+    print('classify result: ', classify(tree, feature_names, ['0', '1']))
+    print('classify result: ', classify(tree, feature_names, ['1', '1']))
