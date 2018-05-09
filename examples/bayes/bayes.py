@@ -158,13 +158,16 @@ if __name__ == '__main__':
 
     words_vects = np.zeros((len(dataset), len(vocabulary)))
     for i in range(len(dataset)):
-        words_vects[i, :] = words2vector(vocabulary, dataset[i])
+        # words_vects[i, :] = words2vector(vocabulary, dataset[i])
+        words_vects[i, :] = words2vector_bow(vocabulary, dataset[i])
     prob_words_in_clz, prob_clz, uni_labels = train_NB(words_vects, np.array(labels))
 
     test_doc = ['love', 'my', 'dalmation']
-    test_vect = words2vector(vocabulary, test_doc)
+    # test_vect = words2vector(vocabulary, test_doc)
+    test_vect = words2vector_bow(vocabulary, test_doc)
     print('classify result: ', classify_NB(test_vect, prob_words_in_clz, prob_clz, uni_labels))
 
     test_doc = ['stupid', 'garbage']
-    test_vect = words2vector(vocabulary, test_doc)
+    # test_vect = words2vector(vocabulary, test_doc)
+    test_vect = words2vector_bow(vocabulary, test_doc)
     print('classify result: ', classify_NB(test_vect, prob_words_in_clz, prob_clz, uni_labels))

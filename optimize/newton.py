@@ -279,3 +279,10 @@ class Newton(object):
         """
         print(msg % (func(x0), x0, niter))
         return x0, func(x0)
+
+    ########################################################################
+    # 拟牛顿算法实现-L-BGFS
+    ########################################################################
+    @staticmethod
+    def lbfgs(x0, func, jac, max_iter=10000, epsilon=1e-10, beta=0.55, delta=0.4):
+        pass
