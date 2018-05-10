@@ -43,10 +43,26 @@ def parse_txt2token(ham_dir, spam_dir):
     return words_list, np.ravel(labels)
 
 
+def stop_words_list():
+    stop_words_file = r'E:\PycharmProjects\ml_impl' \
+                      r'\examples\bayes\data\stop_words.txt'
+
+    stop_words = []
+
+    for word in open(stop_words_file, 'r'):
+        stop_words.append(word.strip())
+    return stop_words
+
+
 def create_vocabulary_list(word_list):
     vocabulary = set([])
+    stop_words = set(stop_words_list())
+
     for words in word_list:
         vocabulary |= set(words)
+    # 除去stop word
+    vocabulary -= stop_words
+
     return list(vocabulary)
 
 
@@ -103,6 +119,7 @@ def classify_NB(test_dataset):
 
 
 if __name__ == '__main__':
+
     ham_dir = r'E:\PycharmProjects\ml_impl\examples\bayes\data\email\ham'
     spam_dir = r'E:\PycharmProjects\ml_impl\examples\bayes\data\email\spam'
 
