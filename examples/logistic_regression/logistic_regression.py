@@ -68,12 +68,15 @@ def plot_decision_boundry(weight):
 
     fig = plt.figure()
     ax = fig.add_subplot(111)
-    ax.scatter(X0[:, 0], X0[:, 1], s=30, c='red', marker='s')
-    ax.scatter(X1[:, 0], X1[:, 1], s=30, c='green')
+    ax.scatter(X0[:, 1], X0[:, 2], s=30, c='red', marker='s')
+    ax.scatter(X1[:, 1], X1[:, 2], s=30, c='green')
 
     lineX = np.linspace(-3.0, 3.0, 60)
-    lineY = weight[1] + weight[0] * lineX
+
+    # decision line: 0 = w0 + w1x1 +w2x2
+    lineY = (-weight[0] - weight[1] * lineX)/weight[2]
     ax.plot(lineX, lineY)
+
     plt.xlabel('X0')
     plt.ylabel('X1')
     plt.show()
