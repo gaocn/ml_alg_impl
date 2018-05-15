@@ -82,10 +82,74 @@ def plot_decision_boundry(weight):
     plt.show()
 
 
+"""
+    Stochastic gradient descent
+      is an example of an online learning algorithm. This is known as online because we can
+      incrementally update the classifier as new data comes in rather than all at once.
+    
+    Naive Stochastic gradient descent 
+        def naive_sgd(X, y):
+            m, n = X.shape
+            alpha = 0.01
+            w = np.ones((n, 1))
+            for i in range(m):
+                h = sigmoid(np.dot(X[1,:],w))
+                error = h - y[i]
+                w = w - alpha * np.outer(X[i,:], error)
+            return w
+    
+    Compare SGD with 'gradient_decent'
+    
+    One way to look at how well the optimization algorithm is doing is to see if it’s converging.
+    That is, are the parameters reaching a steady value, or are they constantly changing?
+    
+    After test, we know:
+      1. it takes a large number of epochs for weights to reach a steady-state value
+      2. there are still local fluctuations
+    A small pieces of data that are not classify correctly causing a large change in the weights.
+    
+    To make weights converge quickly and converge to a single value rather than oscillate(震荡), we have
+    Modified Stochastic Gradient Descent algorithm. 
+"""
+def modified_SGD(X, y, max_niter=1000):
+    m, n = X.shape
+    w = np.ones((n, 1))
+
+    for niter in range(max_niter):
+        data_indices = range(m)
+        for i in range(m):
+            # dynamic alpha to prevent oscillations, decreasing by 1/(niter + i) as
+            #   number of iteration increasing decrease but never reaches 0. In this
+            #   way to make sure new data still has some impact after a large number
+            #   of epochs. You can give new data more weight by increasing constant term.
+            #
+            # NOTE:
+            #  1. using dynamic alpha can converge faster than fixed alpha
+            #  2. This gives an alpha that isn't strictly decreasing when niter << max(i)
+            #  3. The avoidance of a strictly decreasing weight Alg: Simulated Annealing
+            alpha = 4/(i + niter + 1.0) + 0.01
+
+            # reduce the periodic variations of weight
+            rand_idx = int(np.random.uniform(0, len(data_indices)))
+
+            h = sigmoid(np.dot(X[rand_idx, :], w))
+            error = h - y[rand_idx]
+            w = w - alpha * np.outer(X[rand_idx, :], error)
+            print('{0}iterations with alpha={1}, weight={2}'.format(niter, alpha, w))
+
+            # 无放回抽样
+            del(data_indices[rand_idx])
+    return w
+
+
 if __name__ == '__main__':
     print('Logistic Regression')
     X, y = load_data()
 
-    weight = gradient_decent(X, y)
+    # weight = gradient_decent(X, y)
+    # plot_decision_boundry(weight)
 
+    weight = modified_SGD(X, y)
     plot_decision_boundry(weight)
+
+
