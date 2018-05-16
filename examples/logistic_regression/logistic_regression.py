@@ -19,7 +19,6 @@ import numpy as np
     3. stochastic gradient ascent 
             f'(w) = x
     
-    
 """
 
 
@@ -116,7 +115,7 @@ def modified_SGD(X, y, max_niter=1000):
     w = np.ones((n, 1))
 
     for niter in range(max_niter):
-        data_indices = range(m)
+        data_indices = list(range(m))
         for i in range(m):
             # dynamic alpha to prevent oscillations, decreasing by 1/(niter + i) as
             #   number of iteration increasing decrease but never reaches 0. In this
