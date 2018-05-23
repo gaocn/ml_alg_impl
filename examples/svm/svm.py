@@ -86,6 +86,8 @@
 
 
 """
+import matplotlib.pyplot as plt
+from matplotlib.patches import Circle
 import numpy as np
 
 
@@ -216,16 +218,43 @@ def simple_smo(X, y, C, tolerance, max_niter):
 
 
 def plot_decision_boundary(X, y):
-    pass
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+
+    for i in np.unique(y):
+        Xi = X[np.ravel(y == i)]
+        ax.scatter(Xi[:, 0], Xi[:, 1])
+
+    X1 = np.linspace(-1, 10, 50)
+    X2 = (- plot_decision_boundary.w[0] * X1 - plot_decision_boundary.b) / plot_decision_boundary.w[1]
+    ax.plot(X1, X2)
+
+    plt.title('Support Vector Circled')
+    svX = X[np.ravel(plot_decision_boundary.alphas>0)]
+    svY = y[np.ravel(plot_decision_boundary.alphas>0)]
+
+    for i in range(len(svY)):
+        c = Circle((svX[i, 0], svX[i, 1]), radius=0.5, facecolor='none', alpha=0.5, edgecolor=(0, 0.8, 0.8), linewidth=3)
+        ax.add_patch(c)
+    ax.set_xlabel('x1')
+    ax.set_ylabel('x2')
+    plt.show()
 
 
 if __name__ == '__main__':
     X, y = load_data()
 
     alphas, b = simple_smo(X, y, 0.6, 0.001, 40)
-    plot_decision_boundary.alphas = alphas
-    plot_decision_boundary.b = b
 
+    w = np.zeros((X.shape[1]))
+    for i in range(len(alphas)):
+        if alphas[i] == 0: continue
+        w += alphas[i] * y[i] * X[i, :]
+
+    plot_decision_boundary.alphas = alphas
+    plot_decision_boundary.w = w
+    plot_decision_boundary.b = b
+    plot_decision_boundary(X, y)
 
 
 
