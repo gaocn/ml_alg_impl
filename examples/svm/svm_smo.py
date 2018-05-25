@@ -210,7 +210,8 @@ if __name__ == '__main__':
     from svm import load_data, plot_decision_boundary
 
     X, y = load_data()
-    alphas, b, w = SMO(X, y, 0.6, 0.001, 40)
+    # alphas, b, w = SMO(X, y, 0.6, 0.001, 40)
+    alphas, b, w = SMO(X, y, 1.0, 0.001, 40)
 
     plot_decision_boundary.alphas = alphas
     plot_decision_boundary.w = w

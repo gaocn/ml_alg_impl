@@ -243,7 +243,8 @@ def plot_decision_boundary(X, y):
 if __name__ == '__main__':
     X, y = load_data()
 
-    alphas, b = simple_smo(X, y, 0.6, 0.001, 40)
+    # alphas, b = simple_smo(X, y, 0.6, 0.001, 40)
+    alphas, b = simple_smo(X, y, 1.0, 0.001, 40)
 
     w = np.zeros((X.shape[1]))
     for i in range(len(alphas)):
