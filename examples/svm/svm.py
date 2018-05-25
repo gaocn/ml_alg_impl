@@ -83,8 +83,6 @@
         1. both of the alphas have to be outside their margin boundary.
         2. the alphas aren’t already clamped or bounded.
 
-
-
 """
 import matplotlib.pyplot as plt
 from matplotlib.patches import Circle
@@ -129,6 +127,7 @@ def clip_aj(aj, H, L):
 def simple_smo(X, y, C, tolerance, max_niter):
     """
         没有外层循环的SMO简单实现
+        适用于数据量小于1千的模型训练
 
     :param X:
     :param y:
