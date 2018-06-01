@@ -4,6 +4,7 @@
  Date: 2018/6/1
  Description: 
 """
+import matplotlib.pyplot as plt
 import numpy as np
 
 
@@ -114,9 +115,8 @@ if __name__ == '__main__':
 
     # D = np.ones((X.shape[0], 1)) / X.shape[0]
     # ret = build_stump(X, y, D)
-
     classifiers = adaboost(X, y, 10)
-    pred = adaboost_classify(testX, classifiers)
 
+    pred = adaboost_classify(testX, classifiers)
     error_rate = np.sum(pred != testY) / testX.shape[0]
     print('error rate: %.3f' % error_rate)
