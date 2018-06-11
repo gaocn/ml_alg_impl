@@ -100,6 +100,26 @@ def plot_roc(pred, y):
             那么同理排在第二位的n-1，会有M-1个是不满足的，依次类推，故得到后面的公式M*(M+1)/2，我们可以验证在正样本score
             都大于负样本的假设下，AUC的值为1。
 
+    Tuning Classifiers
+    ----------------------
+     1. Manipulating the classifier’s decision with a cost function
+        cost-sensitive learning
+        例如对于分类问题，通过混淆矩阵得到Total Cost为：
+                               Predicted
+                Actual |_____+1__________-1________
+                   +1  |    -5     |     1        |
+                   -1  |    50     |     0        |
+
+         TotalCost = TP*-5+FN*1+FP*50+TN*0
+         我们可以选择Total Cost最小的分类器，将cost function应用到算法中用于选择分类器的方式很多：
+         1). AdaBoost中使用 error weihght vector D调整cost function；
+         2). SVM中使用参数C调整cost function得到不同分类器；
+
+     2. alter the data used to train the classifier to deal with imbalanced classification tasks:
+         1). undersampling means to duplicate examples
+         2). oversampling  means t delete examples
+
+
     """
     fig = plt.figure()
     fig.clf()
