@@ -97,7 +97,7 @@ def adaboost(X, y, max_niter=40):
         agg_pred_error = np.sum(np.sign(agg_pred) != y) / m
         print('agg_pred: {0}, agg_pred_error: {1}'.format(agg_pred.T, agg_pred_error.T))
         if agg_pred_error == 0: break
-    return classifiers
+    return classifiers, agg_pred
 
 
 def adaboost_classify(testX, classifiers):
@@ -115,7 +115,7 @@ if __name__ == '__main__':
 
     # D = np.ones((X.shape[0], 1)) / X.shape[0]
     # ret = build_stump(X, y, D)
-    classifiers = adaboost(X, y, 10)
+    classifiers, pred_scores = adaboost(X, y, 10)
 
     pred = adaboost_classify(testX, classifiers)
     error_rate = np.sum(pred != testY) / testX.shape[0]
